@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brocante Maisons-Laffitte</title>
+<meta name="description" content="Objets à vendre à Maisons-Laffitte : informatique, réseau, téléphonie, électroménager. Liste mise à jour au fil des ventes.">
+<style>
+  :root{
+    --paper:#ece3cf;
+    --card:#f6efdd;
+    --ink:#2b2620;
+    --ink-soft:#5c5341;
+    --line:#c3b696;
+    --stamp:#b3402d;
+    --stamp-ink:#f6efdd;
+    --forest:#3e5c3a;
+    --sold:#8a8168;
+    --shadow: 2px 3px 0 rgba(43,38,32,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#1c1913;
+      --card:#241f17;
+      --ink:#ece3cf;
+      --ink-soft:#b8ac8e;
+      --line:#4a4331;
+      --stamp:#e0664f;
+      --stamp-ink:#1c1913;
+      --forest:#7fa878;
+      --sold:#7a7359;
+      --shadow: 2px 3px 0 rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#1c1913;
+    --card:#241f17;
+    --ink:#ece3cf;
+    --ink-soft:#b8ac8e;
+    --line:#4a4331;
+    --stamp:#e0664f;
+    --stamp-ink:#1c1913;
+    --forest:#7fa878;
+    --sold:#7a7359;
+    --shadow: 2px 3px 0 rgba(0,0,0,0.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', 'Segoe UI', sans-serif;
+    margin:0;
+    padding-inline:20px;
+    padding-block:32px;
+    display:flex;
+    justify-content:center;
+  }
+  main{width:100%; max-width:720px; display:flex; flex-direction:column; gap:32px;}
+
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--forest);
+  }
+  h1{
+    font-family:'Bricolage Grotesque', 'Public Sans', sans-serif;
+    font-weight:800;
+    font-size:clamp(32px,7vw,46px);
+    line-height:1.05;
+    margin:6px 0 0;
+    text-wrap:balance;
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:15px;
+    margin-top:10px;
+    max-width:52ch;
+  }
+
+  .qr-block{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    text-align:center;
+  }
+  .qr-block .stamp{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--stamp);
+    border:1.5px dashed var(--stamp);
+    border-radius:3px;
+    padding:3px 10px;
+    transform:rotate(-2deg);
+  }
+  #qr{
+    background:#fff;
+    padding:12px;
+    border-radius:4px;
+    line-height:0;
+  }
+  .qr-caption{font-size:13px; color:var(--ink-soft); max-width:38ch;}
+  .print-btn{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    background:none;
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    border-radius:3px;
+    padding:8px 16px;
+    cursor:pointer;
+  }
+  .print-btn:hover{background:var(--ink); color:var(--card);}
+
+  section h2{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-size:20px;
+    font-weight:700;
+    margin:0 0 4px;
+  }
+  .section-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:16px;
+  }
+  .item{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:var(--shadow);
+  }
+  .item-photo{
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+    display:block;
+    background:var(--line);
+  }
+  .item-body{
+    padding:14px 16px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    flex:1;
+  }
+  .item-name{font-family:'Bricolage Grotesque', sans-serif; font-weight:700; font-size:16px;}
+  .item-desc{font-size:13px; color:var(--ink-soft); line-height:1.45;}
+  .item-foot{
+    margin-top:auto;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
+    padding-top:6px;
+    border-top:1px dashed var(--line);
+  }
+  .price{
+    font-family:'Space Mono', monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:17px;
+    font-weight:700;
+    color:var(--stamp);
+    white-space:nowrap;
+  }
+  .price-tag{
+    font-family:'Space Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .etat{
+    font-family:'Space Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  .contact{
+    background:var(--forest);
+    color:var(--stamp-ink);
+    border-radius:4px;
+    padding:18px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .contact .label{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    opacity:0.85;
+  }
+  .contact .value{font-size:15px; font-weight:600;}
+
+  footer{
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+  }
+
+  @media print{
+    body{padding:0; background:#fff;}
+    .grid, .contact, footer, .print-btn, .sub{display:none;}
+    main{max-width:100%;}
+    .qr-block{box-shadow:none; border:2px solid #000;}
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Public+Sans:wght@400;600&family=Space+Mono:wght@400;700&display=swap">
+<script src="lib/qrcode.min.js"></script>
+</head>
+<body>
+<main>
+  <div>
+    <div class="eyebrow">Vide-grenier permanent · Maisons-Laffitte</div>
+    <h1>Ça débarrasse, ça circule</h1>
+    <p class="sub">Matériel professionnel et quelques meubles à vendre sur place, à Maisons-Laffitte. La liste bouge au fil des ventes, le QR code ne change pas.</p>
+  </div>
+
+  <div class="qr-block">
+    <div class="stamp">Scannez-moi</div>
+    <div id="qr"></div>
+    <p class="qr-caption">Ce code pointe toujours vers cette page.</p>
+    <button class="print-btn" onclick="window.print()">Imprimer l'affichette</button>
+  </div>
+
+  <section>
+    <h2>En vente</h2>
+    <p class="section-note">Vendu en l'état, retrait sur place à Maisons-Laffitte.</p>
+    <div class="grid">
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0019.jpg" alt="Bloc évier inox avec plaque de cuisson 2 feux">
+        <div class="item-body">
+          <div class="item-name">Bloc évier + plaque 2 feux</div>
+          <p class="item-desc">Évier inox une cuve avec plaque de cuisson électrique 2 feux intégrée et mitigeur. Format kitchenette.</p>
+          <div class="etat">Fonctionnel</div>
+          <div class="item-foot">
+            <span class="price">40 €</span>
+            <span class="price-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0021.jpg" alt="Petite vitrine ancienne en bois à portes vitrées">
+        <div class="item-body">
+          <div class="item-name">Vitrine ancienne en bois</div>
+          <p class="item-desc">Petite vitrine d'exposition ancienne, portes vitrées à cadre laiton, décor doré. Quelques marques d'usage, dans son jus.</p>
+          <div class="etat">Bon état</div>
+          <div class="item-foot">
+            <span class="price">90 €</span>
+            <span class="price-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0025.jpg" alt="Lave-linge hublot Whirlpool">
+        <div class="item-body">
+          <div class="item-name">Lave-linge Whirlpool</div>
+          <p class="item-desc">Lave-linge hublot Whirlpool, 6 kg, essorage 1200 tr/min. Programmes coton, couleurs, synthétiques, laine, couette.</p>
+          <div class="etat">Fonctionnel</div>
+          <div class="item-foot">
+            <span class="price">140 €</span>
+            <span class="price-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0030.jpg" alt="Switch réseau ZyXEL GS1920-24HP">
+        <div class="item-body">
+          <div class="item-name">Switch réseau ZyXEL 24 ports PoE</div>
+          <p class="item-desc">Switch manageable ZyXEL GS1920-24HP, 24 ports Gigabit PoE+, ports combo SFP. Matériel professionnel.</p>
+          <div class="etat">Fonctionnel</div>
+          <div class="item-foot">
+            <span class="price">320 €</span>
+            <span class="price-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0036.jpg" alt="Autocommutateur téléphonique Alcatel OmniPCX Office Small">
+        <div class="item-body">
+          <div class="item-name">Standard téléphonique Alcatel</div>
+          <p class="item-desc">Autocommutateur Alcatel OmniPCX Office Small, interfaces numériques et analogiques. Matériel professionnel.</p>
+          <div class="etat">Fonctionnel</div>
+          <div class="item-foot">
+            <span class="price">90 €</span>
+            <span class="price-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0042.jpg" alt="Vidéoprojecteur Toshiba TDP-T95 avec sa sacoche">
+        <div class="item-body">
+          <div class="item-name">Vidéoprojecteur Toshiba + sacoche</div>
+          <p class="item-desc">Vidéoprojecteur DLP Toshiba TDP-T95, fourni avec sacoche de transport et câble VGA.</p>
+          <div class="etat">Fonctionnel</div>
+          <div class="item-foot">
+            <span class="price">49 €</span>
+            <span class="price-tag">Prix</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item">
+        <img class="item-photo" src="objets/IMG_0050.jpg" alt="Deux unités centrales Dell OptiPlex 790">
+        <div class="item-body">
+          <div class="item-name">2 unités centrales Dell OptiPlex 790 (le lot)</div>
+          <p class="item-desc">Deux unités centrales Dell OptiPlex 790, Intel Core i3, autocollant Windows 7. Vendues ensemble.</p>
+          <div class="etat">Fonctionnelles</div>
+          <div class="item-foot">
+            <span class="price">150 €</span>
+            <span class="price-tag">Prix le lot</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="contact">
+    <div class="label">Pour venir voir ou réserver</div>
+    <div class="value"><a href="tel:+33749395380" style="color:inherit;">+33 7 49 39 53 80</a> (également joignable sur WhatsApp)</div>
+    <div class="label" style="margin-top:8px;">Quartier</div>
+    <div class="value">Maisons-Laffitte</div>
+  </div>
+
+  <footer>Page mise à jour au fil des ventes. Objets vendus retirés de la liste.</footer>
+</main>
+
+<script>
+  try{
+    new QRCode(document.getElementById("qr"), {
+      text: window.location.href,
+      width: 168,
+      height: 168,
+      colorDark: "#2b2620",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }catch(e){
+    document.getElementById("qr").textContent = "QR indisponible hors ligne";
+  }
+</script>
+</body>
+</html>
