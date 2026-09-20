@@ -110,6 +110,51 @@
     line-height:0;
   }
   .qr-caption{font-size:13px; color:var(--ink-soft); max-width:38ch;}
+
+  .access-options{display:flex; flex-direction:column; gap:0;}
+  .or-divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 0;
+    color:var(--ink-soft);
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+  .or-divider::before, .or-divider::after{content:""; flex:1; height:1px; background:var(--line);}
+
+  .alt-block{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    text-align:center;
+  }
+  .alt-phone{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-weight:800;
+    font-size:clamp(26px,6vw,32px);
+    color:var(--ink);
+    text-decoration:none;
+    letter-spacing:0.02em;
+  }
+  .alt-phone:hover{color:var(--stamp);}
+  .alt-caption{font-size:13px; color:var(--ink-soft); margin:0;}
+  .alt-url{
+    font-family:'Space Mono', monospace;
+    font-size:16px;
+    font-weight:700;
+    color:var(--forest);
+    word-break:break-all;
+    padding-top:4px;
+  }
   .print-btn{
     font-family:'Space Mono', monospace;
     font-size:13px;
@@ -226,7 +271,9 @@
     body{padding:0; background:#fff;}
     .grid, .contact, footer, .print-btn, .sub{display:none;}
     main{max-width:100%;}
-    .qr-block{box-shadow:none; border:2px solid #000;}
+    .qr-block, .alt-block{box-shadow:none; border:2px solid #000;}
+    .or-divider{color:#000;}
+    .or-divider::before, .or-divider::after{background:#000;}
   }
 </style>
 
@@ -242,11 +289,23 @@
     <p class="sub">Matériel professionnel et quelques meubles à vendre sur place, à Maisons-Laffitte. La liste bouge au fil des ventes, le QR code ne change pas.</p>
   </div>
 
-  <div class="qr-block">
-    <div class="stamp">Scannez-moi</div>
-    <div id="qr"></div>
-    <p class="qr-caption">Ce code pointe toujours vers cette page.</p>
-    <button class="print-btn" onclick="window.print()">Imprimer l'affichette</button>
+  <div class="access-options">
+    <div class="qr-block">
+      <div class="stamp">Scannez-moi</div>
+      <div id="qr"></div>
+      <p class="qr-caption">Ce code pointe toujours vers cette page.</p>
+      <button class="print-btn" onclick="window.print()">Imprimer l'affichette</button>
+    </div>
+
+    <div class="or-divider">ou</div>
+
+    <div class="alt-block">
+      <div class="stamp">Pas de smartphone ?</div>
+      <a class="alt-phone" href="tel:+33749395380">07 49 39 53 80</a>
+      <p class="alt-caption">Appelez ou passez directement, à Maisons-Laffitte</p>
+      <div class="alt-url">paulemilebretones.github.io/leboncoin</div>
+      <p class="alt-caption">Ou tapez cette adresse dans un navigateur</p>
+    </div>
   </div>
 
   <section>
