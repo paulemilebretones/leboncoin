@@ -61,9 +61,11 @@
   .lang-switch{
     display:flex;
     flex-wrap:wrap;
-    gap:6px;
+    align-items:center;
+    gap:8px;
     align-self:flex-start;
   }
+  .lang-icon{font-size:16px; line-height:1;}
   .lang-btn{
     font-family:'Space Mono', monospace;
     font-size:11.5px;
@@ -651,11 +653,11 @@
   };
 
   var LANGS = [
-    { code: "fr", label: "FR" },
-    { code: "en", label: "EN" },
-    { code: "es", label: "ES" },
-    { code: "it", label: "IT" },
-    { code: "de", label: "DE" }
+    { code: "fr", label: "FR", native: "Français" },
+    { code: "en", label: "EN", native: "English" },
+    { code: "es", label: "ES", native: "Español" },
+    { code: "it", label: "IT", native: "Italiano" },
+    { code: "de", label: "DE", native: "Deutsch" }
   ];
 
   var currentLang = "fr";
@@ -678,11 +680,18 @@
   function renderLangSwitch(){
     var el = document.getElementById("lang-switch");
     el.innerHTML = "";
+    var icon = document.createElement("span");
+    icon.className = "lang-icon";
+    icon.textContent = "🌐";
+    icon.setAttribute("aria-hidden", "true");
+    el.appendChild(icon);
     LANGS.forEach(function(l){
       var b = document.createElement("button");
       b.className = "lang-btn" + (l.code === currentLang ? " active" : "");
       b.textContent = l.label;
+      b.title = l.native;
       b.setAttribute("aria-pressed", l.code === currentLang ? "true" : "false");
+      b.setAttribute("aria-label", l.native);
       b.onclick = function(){ setLang(l.code); };
       el.appendChild(b);
     });
