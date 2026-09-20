@@ -192,7 +192,11 @@
     display:flex;
     flex-direction:column;
     box-shadow:var(--shadow);
+    cursor:pointer;
   }
+  .item:hover, .item:focus-visible{outline:2px solid var(--forest); outline-offset:2px;}
+  .item:focus{outline:none;}
+  .item:focus-visible{outline:2px solid var(--forest);}
   .item-photo{
     width:100%;
     aspect-ratio:4/3;
@@ -275,6 +279,81 @@
     .or-divider{color:#000;}
     .or-divider::before, .or-divider::after{background:#000;}
   }
+
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(20,17,12,0.72);
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+    padding-top:calc(20px + env(safe-area-inset-top, 0px));
+    padding-bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index:100;
+  }
+  .modal-overlay[hidden]{display:none;}
+  .modal{
+    background:var(--card);
+    border-radius:8px;
+    max-width:640px;
+    width:100%;
+    max-height:100%;
+    overflow-y:auto;
+    position:relative;
+    box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  }
+  .modal-close{
+    position:absolute;
+    top:10px; right:10px;
+    width:36px; height:36px;
+    border-radius:50%;
+    border:none;
+    background:var(--ink);
+    color:var(--card);
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    z-index:2;
+  }
+  .modal-main-img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:var(--line);}
+  .modal-thumbs{display:flex; gap:8px; padding:10px; overflow-x:auto;}
+  .modal-thumbs img{
+    width:60px; height:60px; object-fit:cover; border-radius:4px;
+    cursor:pointer; border:2px solid transparent; flex-shrink:0;
+  }
+  .modal-thumbs img.active{border-color:var(--stamp);}
+  .modal-body{padding:8px 24px 24px;}
+  .modal-body h3{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-size:22px;
+    margin:4px 0 10px;
+  }
+  .modal-desc{font-size:14.5px; line-height:1.55; color:var(--ink-soft); white-space:pre-line;}
+  .modal-meta{
+    display:flex; align-items:center; gap:14px;
+    margin-top:14px; padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .modal-meta .price{font-family:'Space Mono', monospace; font-size:22px; font-weight:700; color:var(--stamp);}
+  .modal-meta .etat{font-family:'Space Mono', monospace; font-size:11px; text-transform:uppercase; color:var(--ink-soft);}
+
+  .modal-contact{margin-top:20px; padding-top:16px; border-top:1px dashed var(--line);}
+  .contact-label{font-size:13px; color:var(--ink-soft); margin:0 0 10px;}
+  .contact-buttons{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .contact-btn{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 12px;
+    border-radius:6px;
+    text-decoration:none;
+    font-family:'Public Sans', sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    color:#fff;
+  }
+  .contact-btn svg{width:20px; height:20px; flex-shrink:0;}
+  .contact-btn.wa{background:#25D366; color:#08331c;}
+  .contact-btn.sms{background:var(--forest); color:#fff;}
+  .contact-btn.call{background:var(--ink); color:var(--card);}
+  .contact-btn.li{background:#0A66C2; color:#fff;}
+  .contact-note{font-size:11.5px; color:var(--ink-soft); margin:8px 0 0;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -313,7 +392,7 @@
     <p class="section-note">Vendu en l'état, retrait sur place à Maisons-Laffitte.</p>
     <div class="grid">
 
-      <div class="item">
+      <div class="item" data-id="evier" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0019.jpg" alt="Bloc évier inox avec plaque de cuisson 2 feux">
         <div class="item-body">
           <div class="item-name">Bloc évier + plaque 2 feux</div>
@@ -326,7 +405,7 @@
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" data-id="vitrine" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0021.jpg" alt="Petite vitrine ancienne en bois à portes vitrées">
         <div class="item-body">
           <div class="item-name">Vitrine ancienne 1920, bois et marbre</div>
@@ -339,7 +418,7 @@
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" data-id="lavelinge" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0025.jpg" alt="Lave-linge hublot Whirlpool">
         <div class="item-body">
           <div class="item-name">Lave-linge Whirlpool</div>
@@ -352,7 +431,7 @@
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" data-id="switch" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0030.jpg" alt="Switch réseau ZyXEL GS1920-24HP">
         <div class="item-body">
           <div class="item-name">Switch réseau ZyXEL 24 ports PoE</div>
@@ -365,7 +444,7 @@
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" data-id="alcatel" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0036.jpg" alt="Autocommutateur téléphonique Alcatel OmniPCX Office Small">
         <div class="item-body">
           <div class="item-name">Standard téléphonique Alcatel</div>
@@ -378,7 +457,7 @@
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" data-id="toshiba" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0042.jpg" alt="Vidéoprojecteur Toshiba TDP-T95 avec sa sacoche">
         <div class="item-body">
           <div class="item-name">Vidéoprojecteur Toshiba + sacoche</div>
@@ -391,7 +470,7 @@
         </div>
       </div>
 
-      <div class="item">
+      <div class="item" data-id="dell" tabindex="0" role="button" aria-haspopup="dialog">
         <img class="item-photo" src="objets/IMG_0050.jpg" alt="Deux unités centrales Dell OptiPlex 790">
         <div class="item-body">
           <div class="item-name">2 unités centrales Dell OptiPlex 790 (le lot)</div>
@@ -416,6 +495,156 @@
 
   <footer>Page mise à jour au fil des ventes. Objets vendus retirés de la liste.</footer>
 </main>
+
+<div id="modal-overlay" class="modal-overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" aria-label="Fermer" onclick="closeModal()">&times;</button>
+    <img id="modal-main-img" class="modal-main-img" src="" alt="">
+    <div id="modal-thumbs" class="modal-thumbs"></div>
+    <div class="modal-body">
+      <h3 id="modal-title"></h3>
+      <p id="modal-desc" class="modal-desc"></p>
+      <div class="modal-meta">
+        <span id="modal-price" class="price"></span>
+        <span id="modal-etat" class="etat"></span>
+      </div>
+      <div class="modal-contact">
+        <p class="contact-label">Contacter au sujet de cette annonce</p>
+        <div class="contact-buttons">
+          <a id="btn-whatsapp" class="contact-btn wa" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.06-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18a7.9 7.9 0 0 1-4.06-1.12l-.29-.17-3.01.79.8-2.93-.19-.3A7.93 7.93 0 1 1 12 20Zm4.36-5.94c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1-.37-1.9-1.17-.7-.62-1.18-1.39-1.32-1.63-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.46-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.13 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"/></svg>
+            WhatsApp
+          </a>
+          <a id="btn-sms" class="contact-btn sms">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Zm2 5v2h12V9H6Zm0 4v2h8v-2H6Z"/></svg>
+            SMS
+          </a>
+          <a id="btn-call" class="contact-btn call" href="tel:+33749395380">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.3 1.1L6.6 10.8Z"/></svg>
+            Appel
+          </a>
+          <a id="btn-linkedin" class="contact-btn li" href="https://www.linkedin.com/in/paul-emile-bretones" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5ZM.5 8.24h4V23h-4V8.24ZM8.4 8.24h3.83v2.01h.05c.53-1 1.85-2.06 3.8-2.06 4.07 0 4.82 2.68 4.82 6.16V23h-4v-6.77c0-1.62-.03-3.7-2.25-3.7-2.26 0-2.6 1.76-2.6 3.58V23h-4V8.24Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <p class="contact-note">LinkedIn ouvre le profil (pas de message pré-rempli possible, contrairement à WhatsApp et SMS).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var ITEMS = {
+    evier: {
+      name: "Bloc évier + plaque 2 feux",
+      images: ["IMG_0019.jpg", "IMG_0020.jpg"],
+      desc: "Évier inox une cuve avec plaque de cuisson électrique 2 feux intégrée et mitigeur. Format kitchenette, pratique pour un studio ou une dépendance. Plomberie visible sur les photos, à raccorder.",
+      price: "90 €", etat: "Fonctionnel"
+    },
+    vitrine: {
+      name: "Vitrine ancienne 1920, bois et marbre",
+      images: ["IMG_0021.jpg", "IMG_0022.jpg", "IMG_0023.jpg", "IMG_0024.jpg"],
+      desc: "Authentique vitrine ancienne datant des années 1920, en bois massif, avec un plateau en marbre véritable et une porte vitrée avec serrure. Pieds galbés, décor doré, meuble de qualité et de fabrication ancienne. Bon état général pour son âge, quelques traces d'usure et marques du temps.",
+      price: "280 €", etat: "Bon état"
+    },
+    lavelinge: {
+      name: "Lave-linge Whirlpool",
+      images: ["IMG_0025.jpg"],
+      desc: "Lave-linge hublot Whirlpool, 6 kg, essorage 1200 tr/min. Programmes coton, couleurs, synthétiques, laine, couette, lavage main.",
+      price: "160 €", etat: "Fonctionnel"
+    },
+    switch: {
+      name: "Switch réseau ZyXEL 24 ports PoE",
+      images: ["IMG_0030.jpg", "IMG_0027.jpg", "IMG_0028.jpg", "IMG_0029.jpg", "IMG_0031.jpg"],
+      desc: "Switch manageable ZyXEL GS1920-24HP : 24 ports Gigabit PoE+, 4 ports combo Gigabit/SFP. Matériel professionnel, utile pour alimenter des bornes wifi, caméras IP ou téléphones IP directement par le réseau.",
+      price: "349 €", etat: "Fonctionnel"
+    },
+    alcatel: {
+      name: "Standard téléphonique Alcatel",
+      images: ["IMG_0036.jpg", "IMG_0033.jpg", "IMG_0035.jpg", "IMG_0038.jpg", "IMG_0039.jpg"],
+      desc: "Autocommutateur Alcatel OmniPCX Office Small : interfaces numériques et analogiques, module Business Processing Unit. Permet de gérer plusieurs lignes et postes pour un petit bureau.",
+      price: "150 €", etat: "Fonctionnel"
+    },
+    toshiba: {
+      name: "Vidéoprojecteur Toshiba + sacoche",
+      images: ["IMG_0042.jpg", "IMG_0040.jpg", "IMG_0041.jpg", "IMG_0044.jpg", "IMG_0046.jpg"],
+      desc: "Vidéoprojecteur DLP Toshiba TDP-T95 : 2200 lumens, résolution XGA, technologie DLP Texas Instruments. Fourni avec sa sacoche de transport et un câble VGA.",
+      price: "89 €", etat: "Fonctionnel"
+    },
+    dell: {
+      name: "2 unités centrales Dell OptiPlex 790 (le lot)",
+      images: ["IMG_0050.jpg", "IMG_0051.jpg", "IMG_0052.jpg", "IMG_0054.jpg"],
+      desc: "Deux unités centrales Dell OptiPlex 790, format SFF, processeur Intel Core i3, autocollant Windows 7 d'origine, lecteur DVD. Vendues ensemble, idéales pour un usage bureautique simple.",
+      price: "190 €", etat: "Fonctionnelles"
+    }
+  };
+
+  var overlay = document.getElementById("modal-overlay");
+  var lastFocused = null;
+
+  function openModal(id){
+    var item = ITEMS[id];
+    if(!item) return;
+    lastFocused = document.activeElement;
+
+    document.getElementById("modal-title").textContent = item.name;
+    document.getElementById("modal-desc").textContent = item.desc;
+    document.getElementById("modal-price").textContent = item.price;
+    document.getElementById("modal-etat").textContent = item.etat;
+
+    setMainImage(item.images[0]);
+    var thumbs = document.getElementById("modal-thumbs");
+    thumbs.innerHTML = "";
+    if(item.images.length > 1){
+      item.images.forEach(function(src, i){
+        var t = document.createElement("img");
+        t.src = "objets/" + src;
+        t.alt = "";
+        if(i === 0) t.className = "active";
+        t.onclick = function(){ setMainImage(src, t); };
+        thumbs.appendChild(t);
+      });
+    }
+
+    var message = encodeURIComponent("Bonjour, je suis intéressé par votre annonce \"" + item.name + "\" sur la brocante de Maisons-Laffitte.");
+    document.getElementById("btn-whatsapp").href = "https://wa.me/33749395380?text=" + message;
+    document.getElementById("btn-sms").href = "sms:+33749395380?body=" + message;
+
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.querySelector(".modal-close").focus();
+  }
+
+  function setMainImage(src, thumbEl){
+    document.getElementById("modal-main-img").src = "objets/" + src;
+    document.querySelectorAll("#modal-thumbs img").forEach(function(el){ el.classList.remove("active"); });
+    if(thumbEl) thumbEl.classList.add("active");
+  }
+
+  function closeModal(){
+    overlay.hidden = true;
+    document.body.style.overflow = "";
+    if(lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll(".item[data-id]").forEach(function(card){
+    card.addEventListener("click", function(){ openModal(card.dataset.id); });
+    card.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        openModal(card.dataset.id);
+      }
+    });
+  });
+
+  overlay.addEventListener("click", function(e){
+    if(e.target === overlay) closeModal();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && !overlay.hidden) closeModal();
+  });
+</script>
 
 <script>
   try{
